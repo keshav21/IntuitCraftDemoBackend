@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: intuit-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: intuit-app
+  template:
+    metadata:
+      labels:
+        app: intuit-app
+    spec:
+      containers:
+        - name: intuit-app
+          image: keshavvelhal21/intuit-app:latest # Ensure your image is pushed to a container registry accessible by Minikube
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/intuit_db"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "intuit_user"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "intuitpassword"
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: "org.postgresql.Driver"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: intuit-app
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30001
+  selector:
+    app: intuit-app

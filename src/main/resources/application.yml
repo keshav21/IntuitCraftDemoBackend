@@ -1,0 +1,46 @@
+# Configuration for the Spring Boot embedded web server
+# DataSource configuration for connecting to the database
+spring:
+  server:
+    port: 5053
+  web:
+    mvc:
+      cors:
+         mappings:
+            "/**":
+              allowed-origins: "*"
+              allowed-methods: "GET,POST,PUT,DELETE,HEAD"
+              allowed-headers: "*"
+  datasource:
+    # URL of the database
+    url: jdbc:postgresql://localhost:5432/intuit_db
+    # Username for accessing the database
+    username: 'intuit_user'
+    # Password for accessing the database
+    password: 'intuitpassword'
+    # Driver class name for the database
+    driver-class-name: org.postgresql.Driver
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+# JPA (Java Persistence API) configuration for Hibernate
+jpa:
+  hibernate:
+    # Strategy for handling database schema updates
+    ddl-auto: update
+  properties:
+    hibernate:
+      # Dialect for the specific database
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      # Enable SQL statement formatting
+      format_sql: true
+
+# Logging configuration
+logging:
+  level:
+    # Logging level for Hibernate SQL statements
+    org:
+      hibernate:
+        SQL: debug
+    # Default logging level for the application
+    root: info
